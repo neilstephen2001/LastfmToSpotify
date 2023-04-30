@@ -50,15 +50,36 @@ body {
     font-size: 20px;
     font-weight: 500;
     margin: 20px 0 0 0;
+    color: #3c1e33;
 }
 .form-input p {
     font-size: 14px;
 }
-input[type=text], textarea, select {
+input[type=text], textarea {
     width: 80%;
     font-size: 16px;
     font-weight: 500;
-    border-radius: 1px solid #3c1e33;
+    border: 1px solid #3c1e33;
+    border-radius: 3px;
+    color: #3c1e33;
+    padding: 0 4px 0 4px;
+}
+input[type=number] {
+    width: 80%;
+    font-size: 16px;
+    font-weight: 500;
+    border: 1px solid #3c1e33;
+    border-radius: 3px;
+    color: #3c1e33;
+    padding: 0 4px 0 4px;
+}
+select {
+    width: 80%;
+    font-size: 16px;
+    font-weight: 500;
+    border: 1px solid #3c1e33;
+    border-radius: 3px;
+    color: #3c1e33;
 }
 textarea {
     resize: none;
