@@ -81,6 +81,9 @@ select {
     border-radius: 3px;
     color: #3c1e33;
 }
+select option {
+    font-weight: 500;
+}
 textarea {
     resize: none;
 }

@@ -13,9 +13,7 @@ import main
 
 global playlist_url
 global embedded_playlist_url
-global username
-global time_period
-global tracks
+global playlist_id
 
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
@@ -26,6 +24,10 @@ def index():
 
 @app.route('/submit-lastfm', methods=['POST'])
 def submit_lastfm():
+    global username 
+    global time_period
+    global tracks
+
     username = request.form['username']
     time_period = request.form['time-period']
     tracks = request.form['tracks']
@@ -33,7 +35,19 @@ def submit_lastfm():
 
 @app.route('/results')
 def results():
-    return render_template('display-results.html')
+    if time_period == '7day':
+        timeperiod = 'last 7 days'
+    elif time_period == '1month':
+        timeperiod = 'last 30 days'
+    elif time_period == '1month':
+        timeperiod = 'last 90 days'
+    elif time_period == '1month':
+        timeperiod = 'last 180 days'
+    elif time_period == '1month':
+        timeperiod = 'last 365 days'
+    else:
+        timeperiod = 'all-time'
+    return render_template('display-results.html', username = username, tracks = tracks, timeperiod = timeperiod)
 
 @app.route('/return-home', methods=['POST'])
 def return_home():
@@ -53,6 +67,6 @@ def playlist_display():
     embedded_playlist_url = "https://open.spotify.com/embed/playlist/000hqMJogZg18TKJHYsidZ?utm_source=generator"
     return render_template('display-playlist.html', value = embedded_playlist_url)
 
-    
 if __name__ == '__main__':
     app.run()
+
