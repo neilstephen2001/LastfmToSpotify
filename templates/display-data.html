@@ -11,8 +11,38 @@
 </head>
 
 <body>
-
-
+    <div class="heading">
+        <!--find a way to customise this depending on the user input-->
+        <h2 id="message">stvn127's top tracks (last 90 days)</p>  
+    </div>
+    <div class="data-container">
+        <!--run a for loop based on the number of tracks to display-->
+        <!--add a div for each track-->
+        <div class="data-heading">
+            <div id="number"><span> </span></div>
+            <div id="artist-name"><span>Artist</span></div>
+            <div id="track-name"><span>Track</span></div>
+        </div>
+        <div class="track">
+            <div id="number"><p>1.</p></div>
+            <div id="track-photo"><img src="../images/exo_test.jpg"></div>
+            <div id="artist-name"><span>EXO</span></div>
+            <div id="track-name"><span>Love Me Right</span></div>
+        </div>
+        <div class="track">
+            <div id="number"><p>2.</p></div>
+            <div id="track-photo"><img src="../images/bp_test.jpg"></div>
+            <div id="artist-name"><span>BLACKPINK</span></div>
+            <div id="track-name"><span>As If It's Your Last</span></div>
+        </div>
+    </div>
+    <div class="buttons">
+        <button id="export"><span>Export to Spotify playlist</span></button>
+        <!-- may need to edit the <a> once flask has been implemented-->
+        <a href="index.html">
+            <button id="home"><span>Return to homepage</span></button>
+        </a>
+    </div>
     
 </body>
 
