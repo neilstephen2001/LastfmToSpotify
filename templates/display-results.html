@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link rel="stylesheet" type="text/css" href="../static/style.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="icon" href="../images/favicon.jpeg">
+    <link rel="icon" href="../static/favicon.jpeg">
 </head>
 
 <body>
@@ -25,24 +25,24 @@
         </div>
         <div class="track">
             <div id="number"><p>1.</p></div>
-            <div id="track-photo"><img src="../images/exo_test.jpg"></div>
+            <div id="track-photo"><img src="../static/exo_test.jpg"></div>
             <div id="artist-name"><span>EXO</span></div>
             <div id="track-name"><span>Love Me Right</span></div>
         </div>
         <div class="track">
             <div id="number"><p>2.</p></div>
-            <div id="track-photo"><img src="../images/bp_test.jpg"></div>
+            <div id="track-photo"><img src="../static/bp_test.jpg"></div>
             <div id="artist-name"><span>BLACKPINK</span></div>
             <div id="track-name"><span>As If It's Your Last</span></div>
         </div>
     </div>
-    <div class="buttons">
-        <button id="export"><span>Export to Spotify playlist</span></button>
-        <!-- may need to edit the <a> once flask has been implemented-->
-        <a href="index.html">
-            <button id="home"><span>Return to homepage</span></button>
-        </a>
-    </div>
+    <form method="POST" action="{{ url_for('return_home') }}" >
+        <div class="buttons">
+            <button id="export" name="export"><span>Export to Spotify playlist</span></button>
+            <!-- may need to edit the <a> once flask has been implemented-->
+            <button id="home" name="home"><span>Return to homepage</span></button>
+        </div>
+    </form>
     
 </body>
 

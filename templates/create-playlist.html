@@ -7,12 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link rel="stylesheet" type="text/css" href="../static/style.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="icon" href="../images/favicon.jpeg">
+    <link rel="icon" href="../static/favicon.jpeg">
 </head>
 
 <body>
     <div class="user-input">
-        <form method="POST">
+        <form method="POST" action="{{ url_for('playlist_create') }}">
             <h2 id="form-header">Create Spotify playlist</h2>
             <div class="form-input">
                 <label for="playlist-name">Playlist name:</label>
@@ -21,8 +21,8 @@
                 <textarea cols="20" rows="3" id="description" name="description"></textarea>
             </div>
             <div class="buttons">
-                <input type="submit" value="Create playlist">
-                <input type="reset" value="Reset">
+                <input type="submit" name="submit" value="Create playlist">
+                <input type="reset" name="reset" value="Reset">
             </div>
         </form>
     </div>
