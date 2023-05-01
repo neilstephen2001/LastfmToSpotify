@@ -9,7 +9,8 @@ TBD
 <img src="/screenshots/homepage.png" alt= “homepage” width="700">
 <br>
 
-- Enter the information, then click 'Submit'. The data will then be displayed. 
+- Enter the information, then click 'Submit'. The data will then be displayed.
+- Note: the sample data below was obtained from [my own last.fm profile](https://www.last.fm/user/stvn127/library/tracks?date_preset=LAST_90_DAYS).
 <img src="/screenshots/display-results.png" alt= “results” width="700">
 <br>
 
