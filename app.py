@@ -6,15 +6,14 @@ Flask app
 """
 
 from flask import Flask, request, url_for, session, redirect, render_template
-import spotipy
 from spotipy.oauth2 import SpotifyOAuth
+import spotipy
 import time
-import main
+import requests
+import json
+import config, main
 
-global playlist_url
-global embedded_playlist_url
-global playlist_id
-
+# Flask app
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
 
@@ -35,38 +34,45 @@ def submit_lastfm():
 
 @app.route('/results')
 def results():
+    global track_data
+    track_data = main.get_top_tracks(user = username, period = time_period, limit = tracks)
     if time_period == '7day':
-        timeperiod = 'last 7 days'
+        period = 'last 7 days'
     elif time_period == '1month':
-        timeperiod = 'last 30 days'
+        period = 'last 30 days'
     elif time_period == '1month':
-        timeperiod = 'last 90 days'
+        period = 'last 90 days'
     elif time_period == '1month':
-        timeperiod = 'last 180 days'
+        period = 'last 180 days'
     elif time_period == '1month':
-        timeperiod = 'last 365 days'
+        period = 'last 365 days'
     else:
-        timeperiod = 'all-time'
-    return render_template('display-results.html', username = username, tracks = tracks, timeperiod = timeperiod)
+        period = 'all-time'
+    return render_template('display-results.html', username = username, tracks = tracks, period = period)
 
 @app.route('/return-home', methods=['POST'])
 def return_home():
     if 'export' in request.form:
+        global song_uri
+        song_uri = main.get_song_uri(track_data)
         return render_template('create-playlist.html')
     else:
         return redirect(url_for('index'))
 
 @app.route('/playlist-create', methods=['POST'])
 def playlist_create():
-    playlist_name = request.form.get('playlist')
-    playlist_description = request.form.get('description')
+    global embedded_playlist_url
+    playlist_details = json.dumps({
+        'name': request.form.get('playlist-name'),
+        'description': request.form.get('description'),
+        'public': False
+    })
+    embedded_playlist_url = main.create_playlist(playlist_details, song_uri)
     return redirect(url_for('playlist_display'))
 
 @app.route('/playlist-display')
 def playlist_display():
-    embedded_playlist_url = "https://open.spotify.com/embed/playlist/000hqMJogZg18TKJHYsidZ?utm_source=generator"
     return render_template('display-playlist.html', value = embedded_playlist_url)
 
 if __name__ == '__main__':
     app.run()
-
