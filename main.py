@@ -130,7 +130,7 @@ def remove_punctuation(name):
 
 def make_embedded_url(playlist_url):
     split_url = playlist_url.partition(".com/")
-    embedded_url = split_url[0] + split_url[1] + 'embed/' + split_url[2] + '?utm_source=generator'
+    embedded_url = split_url[0] + split_url[1] + 'embed/' + split_url[2] + '?utm_source=generator&theme=0'
     return embedded_url
 
 def exceptions(response):

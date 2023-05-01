@@ -61,10 +61,9 @@ def results():
     main.get_artist_image(artist_list, track_data)
     return render_template('display-results.html', username = username, tracks = tracks, period = period)
 
-@app.route('/return-home', methods=['POST'])
-def return_home():
+@app.route('/export-playlist', methods=['POST'])
+def export_playlist():
     if 'export' in request.form:
-        
         return render_template('create-playlist.html')
     else:
         return redirect(url_for('index'))
@@ -83,6 +82,10 @@ def playlist_create():
 @app.route('/playlist-display')
 def playlist_display():
     return render_template('display-playlist.html', value = embedded_playlist_url)
+
+@app.route('/home', methods=['POST'])
+def return_home():
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
     app.run()

@@ -50,7 +50,7 @@
             .catch(error => console.error(error));
         </script>
     </div>
-    <form method="POST" action="{{ url_for('return_home') }}" >
+    <form method="POST" action="{{ url_for('export_playlist') }}" >
         <div class="buttons">
             <button id="export" name="export"><span>Export to Spotify playlist</span></button>
             <!-- may need to edit the <a> once flask has been implemented-->

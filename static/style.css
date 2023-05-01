@@ -186,7 +186,9 @@ textarea {
 }
 .track .track-photo {
     width: 75px;
-    padding: 3px 0 0 4px;
+    padding: 6px 0 0 6px;
+    align-items: center;
+    justify-content: center;
 }
 .track .artist-name {
     width: calc((100% - 150px) * 0.35);
@@ -211,6 +213,7 @@ textarea {
 }
 .track img {
     max-height: 90%;
+    max-width: 90%;
     align-items: center;
     justify-content: center;
     position: absolute;
