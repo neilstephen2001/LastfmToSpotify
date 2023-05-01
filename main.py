@@ -5,7 +5,7 @@ main.py:
 Contains most of the functions involved with extracting 
 the last.fm data and creating the Spotify playlist
 """
-
+from spotipy.oauth2 import SpotifyOAuth
 import requests
 import json
 import spotipy
@@ -40,6 +40,12 @@ def get_top_tracks(user, period, limit):
             track_data.append(data)
         return track_data
 
+def create_spotify_oauth():
+    return SpotifyOAuth(client_id=config.SPOTIFY_ID,
+                            client_secret=config.SPOTIFY_SECRET,
+                            redirect_uri=config.SPOTIFY_REDIRECT_URI,
+                            scope=['playlist-modify-private', 'playlist-modify-public'])
+
 def get_headers():
     username = config.SPOTIFY_USERNAME
     scope = 'playlist-modify-private'
@@ -69,61 +75,48 @@ def get_song_uri(track_data):
             exceptions(r)
             break
         else:
+            print(song, artist)
             uri = r.json()['tracks']['items']
             if not uri:
-                break
-            # find matching song out of the top 5 results
-            # if none match, pick the top result
-            for i in range(5):
-                if len(item['track_name']) == len(uri[i]['name']):
-                    uri_list.append(uri[i]['uri'])
-                    artist_list.append(uri[i]['artists'][0])
-                    break
-                elif i == 4:
-                    uri_list.append(uri[0]['uri'])
-                    artist_list.append(uri[i]['artists'][0])
+                artist_list.append({'id': ""})
+                uri_list.append("")
+            else:
+                # find matching song out of the top 3 results
+                # if none match, pick the top result
+                top_results = 5
+                if len(uri) < 5:
+                    top_results = len(uri)
+                for i in range(top_results):
+                    if len(item['track_name']) == len(uri[i]['name']):
+                        uri_list.append(uri[i]['uri'])
+                        artist_list.append(uri[i]['artists'][0])
+                        break
+                    elif i == 4:
+                        uri_list.append(uri[0]['uri'])
+                        artist_list.append(uri[i]['artists'][0])
     return uri_list, artist_list
 
 def get_artist_image(artist_list, track_data):
-    for i in range(len(track_data)):
+    for i in range(len(artist_list)):
         artist_id = artist_list[i]['id']
-        url = f"https://api.spotify.com/v1/artists/{artist_id}"
-        r = requests.get(url = url, headers = get_headers())
+        if artist_id != "":
+            url = f"https://api.spotify.com/v1/artists/{artist_id}"
+            r = requests.get(url = url, headers = get_headers())
 
-        if r.status_code != 200:
-            exceptions(r)
-            break
-        else:
-            track_data[i]['image'] = r.json()['images'][0]['url']
-
-def create_playlist(playlist_details, uri_list):
-    url = f"https://api.spotify.com/v1/users/{config.SPOTIFY_USERNAME}/playlists"
-    r = requests.post(url, data=playlist_details, headers=get_headers())
-    if r.status_code != 201:
-        exceptions(r)
-    else:
-        playlist = r.json()
-        add_songs_to_playlist(playlist['id'], uri_list)
-        playlist_url = playlist['external_urls']['spotify']
-        embedded_url = make_embedded_url(playlist_url)
-        return embedded_url
-
-def add_songs_to_playlist(playlist_id, uri_list):
-    url = f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks"
-
-    data = json.dumps({'uris': uri_list})
-    r = requests.post(url, data = data, headers=get_headers())
-    if r.status_code != 201:
-        exceptions(r)
-    else:
-        print("Playlist successfully created")
+            if r.status_code != 200:
+                exceptions(r)
+                break
+            else:
+                track_data[i]['image'] = r.json()['images'][0]['url']
 
 def remove_punctuation(name):
-    punctuation = '''{};:'"\,<>/@#$%^&*_~'''
+    punctuation = """{};:'",<>@#$%^&*_~"""
     for i in name:
         if i in punctuation:
             if i == '&':
                 name = name.replace(i, 'and')
+            elif i == '/' or i == '\\':
+                name = name.replace(i, " ")
             else:
                 name = name.replace(i, "")
     return name
