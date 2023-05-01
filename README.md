@@ -5,11 +5,11 @@ A web app that generates a Spotify playlist of a user's most listened tracks, ob
 TBD
 
 ## How it works:
-- When the application is first run, you will see this page where you will be prompted to login to your Spotify account 
+- When the application is first run, you will see this page where you will be prompted to login to your Spotify account and authenticate the app.
 <img src="/screenshots/spotify-login.png" alt= “spotify-login” width="700">
 <br>
 
-- Once you have logged in, you willsee the homepage where you will enter the details for the data to be extracted from last.fm.
+- Once you have logged in, you will see the homepage where you will enter the details for the data to be extracted from last.fm.
 <img src="/screenshots/homepage.png" alt= “homepage” width="700">
 <br>
 
@@ -27,7 +27,5 @@ TBD
 <br>
 
 ## To-do:
-- Need to work out how to handle input errors (e.g. if last.fm username does not exist)
-- Add option to choose theme of embedded playlist
-- Might add an option to upload a custom photo when creating the playlist
+- Need to work out how to handle input errors (e.g. if last.fm username does not exist or file uploaded is too big)
 

@@ -11,6 +11,7 @@ import spotipy
 import requests
 import json
 import config
+import base64
 
 """FLASK APP"""
 app = Flask(__name__)
@@ -22,7 +23,7 @@ def login():
     sp_oauth = SpotifyOAuth(client_id=config.SPOTIFY_ID,
                             client_secret=config.SPOTIFY_SECRET,
                             redirect_uri=config.SPOTIFY_REDIRECT_URL,
-                            scope=['playlist-modify-private', 'playlist-modify-public'],
+                            scope=['playlist-modify-private', 'playlist-modify-public', 'ugc-image-upload'],
                             show_dialog=True)
     auth_url = sp_oauth.get_authorize_url()
     return redirect(auth_url)
@@ -33,7 +34,7 @@ def callback():
     sp_oauth = SpotifyOAuth(client_id=config.SPOTIFY_ID,
                             client_secret=config.SPOTIFY_SECRET,
                             redirect_uri=config.SPOTIFY_REDIRECT_URL,
-                            scope=['playlist-modify-private', 'playlist-modify-public'],
+                            scope=['playlist-modify-private', 'playlist-modify-public', 'ugc-image-upload'],
                             show_dialog=True)
     session.clear()
     token_info = sp_oauth.get_access_token(code)
@@ -103,7 +104,9 @@ def playlist_create():
         'description': request.form.get('description'),
         'public': False
     })
-    embedded_playlist_url = create_playlist(playlist_details, song_uri)
+    cover_art = request.files['cover-art']
+    encoded_image = base64.b64encode(cover_art.read())
+    embedded_playlist_url = create_playlist(playlist_details, song_uri, encoded_image)
     return redirect(url_for('playlist_display'))
 
 @app.route('/playlist-display')
@@ -213,11 +216,15 @@ def get_artist_image(artist_list, track_data):
 
 
 # Creates an empty playlist then adds the user's top songs
-def create_playlist(playlist_details, uri_list):
+def create_playlist(playlist_details, uri_list, cover_art = None):
     access_token = session.get('token_info').get('access_token')
     sp = spotipy.Spotify(auth=access_token)
     headers = {
         "Content-Type": "application/json",
+        "Authorization": f"Bearer { access_token }"
+    }
+    image_headers = {
+        "Content-Type": "image/png",
         "Authorization": f"Bearer { access_token }"
     }
     username = sp.current_user()['id']
@@ -227,6 +234,13 @@ def create_playlist(playlist_details, uri_list):
         exceptions(r)
     else:
         playlist = r.json()
+        if cover_art:
+            url = f"https://api.spotify.com/v1/playlists/{playlist['id']}/images"
+            req = requests.put(url, data = cover_art, headers=image_headers)
+            if req.status_code != 202:
+                exceptions(req)
+            else:
+                print("Playlist cover successfully added")
         url = f"https://api.spotify.com/v1/playlists/{playlist['id']}/tracks"
         uris = json.dumps({'uris': uri_list})
         req = requests.post(url, data = uris, headers=headers)

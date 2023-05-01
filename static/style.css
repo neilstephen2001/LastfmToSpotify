@@ -43,13 +43,14 @@ body {
     display:flex;
     width: 100%;
     align-items: center;
+    justify-content: center;
     flex-direction: column;
     padding: 20px 20px 50px 20px;
 }
 .form-input label {
     font-size: 20px;
     font-weight: 500;
-    margin: 20px 0 0 0;
+    margin: 25px 0 0 0;
     color: #3c1e33;
 }
 .form-input p {
@@ -72,6 +73,22 @@ input[type=number] {
     border-radius: 3px;
     color: #3c1e33;
     padding: 0 4px 0 4px;
+}
+.file-upload {
+    align-items: center;
+    justify-content: space-between;
+    display: flex;
+    flex-direction: row;
+    width: 80%;
+}
+input[type=file] {
+    width: 100%;
+    translate: 26%;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 3px;
+    color: #3c1e33;
+    padding: 5px 4px 0 4px;
 }
 select {
     width: 80%;
