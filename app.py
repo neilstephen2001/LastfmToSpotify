@@ -7,9 +7,7 @@ Flask app
 
 from flask import Flask, request, url_for, session, redirect, render_template, jsonify
 from spotipy.oauth2 import SpotifyOAuth
-from spotipy import util
 import spotipy
-import time
 import requests
 import json
 import config
@@ -17,32 +15,28 @@ import config
 """FLASK APP"""
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
-app.secret_key = 'stan_exo'
+
 
 @app.route('/')
 def login():
     sp_oauth = SpotifyOAuth(client_id=config.SPOTIFY_ID,
                             client_secret=config.SPOTIFY_SECRET,
-                            redirect_uri=config.SPOTIFY_REDIRECT_URI,
+                            redirect_uri=config.SPOTIFY_REDIRECT_URL,
                             scope=['playlist-modify-private', 'playlist-modify-public'],
-                            cache_path='cache',
                             show_dialog=True)
     auth_url = sp_oauth.get_authorize_url()
     return redirect(auth_url)
 
 @app.route('/callback')
 def callback():
+    code = request.args.get('code')
     sp_oauth = SpotifyOAuth(client_id=config.SPOTIFY_ID,
                             client_secret=config.SPOTIFY_SECRET,
-                            redirect_uri=config.SPOTIFY_REDIRECT_URI,
+                            redirect_uri=config.SPOTIFY_REDIRECT_URL,
                             scope=['playlist-modify-private', 'playlist-modify-public'],
-                            cache_path='cache',
                             show_dialog=True)
     session.clear()
-    code = request.args.get('code')
-    print(code)
     token_info = sp_oauth.get_access_token(code)
-    print(token_info)
     session['token_info'] = token_info
     return redirect(url_for('index'))
 
@@ -154,15 +148,9 @@ def get_top_tracks(user, period, limit):
         return track_data
 
 
-def create_spotify_oauth():
-    return SpotifyOAuth(client_id=config.SPOTIFY_ID,
-                        client_secret=config.SPOTIFY_SECRET,
-                        redirect_uri=config.SPOTIFY_REDIRECT_URI,
-                        scope=['playlist-modify-private', 'playlist-modify-public'])
-
-
 # Returns the Spotify URI for each of the user's top songs
 def get_song_uri(track_data):
+    print(session.get('token_info'))
     access_token = session.get('token_info').get('access_token')  
     headers = {
         "Content-Type": "application/json",
