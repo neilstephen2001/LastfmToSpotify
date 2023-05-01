@@ -1,5 +1,7 @@
 # last.fm data to Spotify Playlist
 A web app that generates a Spotify playlist of a user's most listened tracks, obtained from their last.fm profile.
+<br>
+<br>
 
 ## To run the app:
 
@@ -33,21 +35,20 @@ Run the following on terminal then click the link shown:
 <img src="/screenshots/homepage.png" alt= “homepage” width="700">
 <br>
 
-- Enter the information, then click 'Submit'. The data will then be displayed.
-- Note: the sample data below was obtained from [my own last.fm profile](https://www.last.fm/user/stvn127/library/tracks?date_preset=LAST_90_DAYS).
+- Enter the required information, then click 'Submit'. 
+- The data will then be displayed as shown below (sample data obtained from [my own last.fm profile](https://www.last.fm/user/stvn127/library/tracks?date_preset=LAST_90_DAYS)).
 <img src="/screenshots/display-results.png" alt= “results” width="700">
 <br>
 
-- If you choose to export the data to a playlist, you will then be prompted to enter a playlist name and description.
+- If you choose to export the data to a playlist, you will then be prompted to enter a playlist name and description. 
+- You may also choose to upload an image for the playlist's cover.
 <img src="/screenshots/create-playlist.png" alt= “create-playlist” width="700">
 <br>
 
-- A public playlist will be generated on your Spotify profile, and this will also be embedded into the web page. 
+- A public playlist will be generated on your Spotify profile, and this will also be embedded onto the web page. 
 <img src="/screenshots/display-playlist.png" alt= “display-playlist” width="700">
 <br>
 
 ## Notes/to-do:
 - Currently only works if user is included as one of the app's developers on the Spotify Developer website
-- Need to work out how to handle input errors (e.g. if last.fm username does not exist)
-- Add option to choose theme of embedded playlist
-- Might add an option to upload a custom photo when creating the playlist
+- Need to implement error handling (e.g. if last.fm username does not exist or file upload is too big)
