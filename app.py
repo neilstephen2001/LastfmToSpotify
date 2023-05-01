@@ -150,7 +150,6 @@ def get_top_tracks(user, period, limit):
 
 # Returns the Spotify URI for each of the user's top songs
 def get_song_uri(track_data):
-    print(session.get('token_info'))
     access_token = session.get('token_info').get('access_token')  
     headers = {
         "Content-Type": "application/json",

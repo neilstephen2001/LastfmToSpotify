@@ -12,5 +12,5 @@ LASTFM_API = os.environ.get('LASTFM_API')
 # LASTFM_SECRET = os.environ.get('LASTFM_SECRET')
 SPOTIFY_ID = os.environ.get('SPOTIFY_ID')
 SPOTIFY_SECRET = os.environ.get('SPOTIFY_SECRET')
-SPOTIFY_REDIRECT_URL = os.environ.get('SPOTIFY_REDIRECT_URI')
+SPOTIFY_REDIRECT_URL = os.environ.get('SPOTIFY_REDIRECT_URL')
 SPOTIFY_USERNAME = "kfs3lqp4ixq8klhnmk8qh50sj"
