@@ -132,7 +132,7 @@ textarea {
     height:100%; 
 }
 /* for displaying the results */
-.data-container {
+#data-container {
     display: grid;
     position: relative;
     flex-direction: column;
@@ -155,16 +155,21 @@ textarea {
     font-size: 20px;
     font-weight: 500;
 }
-.data-heading #number {
+.data-heading .number {
     width: 150px;
     text-align: center;
 }
-.data-heading #artist-name {
-    width: calc((100% - 150px) * 0.4);
+.data-heading .artist-name {
+    width: calc((100% - 150px) * 0.35);
     padding: 2px 0 0 20px;
 }
-.data-heading #track-name {
-    width: calc((100% - 150px) * 0.6);
+.data-heading .track-name {
+    width: calc((100% - 150px) * 0.55);
+    padding: 2px 0 0 20px;
+}
+.data-heading .playcount {
+    width: calc((100% - 150px) * 0.1);
+    min-width: 150px;
     padding: 2px 0 0 20px;
 }
 .track {
@@ -174,21 +179,26 @@ textarea {
     position: relative;
     text-align: left;
 }
-.track #number {
+.track .number {
     width: 75px;
     padding: 15px 0 0 0px;
     text-align: center;
 }
-.track #track-photo {
+.track .track-photo {
     width: 75px;
     padding: 3px 0 0 4px;
 }
-.track #artist-name {
-    width: calc((100% - 150px) * 0.4);
+.track .artist-name {
+    width: calc((100% - 150px) * 0.35);
     padding: 21px 0 0 20px;
 }
-.track #track-name {
-    width: calc((100% - 150px) * 0.6);
+.track .track-name {
+    width: calc((100% - 150px) * 0.55);
+    padding: 21px 0 0 20px;
+}
+.track .playcount {
+    width: calc((100% - 150px) * 0.1);
+    min-width: 150px;
     padding: 21px 0 0 20px;
 }
 .track p {

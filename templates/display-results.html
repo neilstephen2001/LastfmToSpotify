@@ -12,30 +12,43 @@
 
 <body>
     <div class="heading">
-        
-        <!--find a way to customise this depending on the user input-->
         <h2 id="message">{{ username }}'s top {{ tracks }} tracks ({{ period }}) </p>  
     </div>
-    <div class="data-container">
+    
+    <div id="data-container">
         <!--run a for loop based on the number of tracks to display-->
-        <!--add a div for each track-->
         <div class="data-heading">
-            <div id="number"><span> </span></div>
-            <div id="artist-name"><span>Artist</span></div>
-            <div id="track-name"><span>Track</span></div>
+            <div class="number"><span> </span></div>
+            <div class="artist-name"><span>Artist</span></div>
+            <div class="track-name"><span>Track</span></div>
+            <div class="playcount"><span>Playcount</span></div>
         </div>
-        <div class="track">
-            <div id="number"><p>1.</p></div>
-            <div id="track-photo"><img src="../static/exo_test.jpg"></div>
-            <div id="artist-name"><span>EXO</span></div>
-            <div id="track-name"><span>Love Me Right</span></div>
-        </div>
-        <div class="track">
-            <div id="number"><p>2.</p></div>
-            <div id="track-photo"><img src="../static/bp_test.jpg"></div>
-            <div id="artist-name"><span>BLACKPINK</span></div>
-            <div id="track-name"><span>As If It's Your Last</span></div>
-        </div>
+        <script>
+            // Get JSON data using AJAX
+            fetch('/process-data')
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                const dataContainer = document.getElementById('data-container');
+                for (i = 0; i < data.length; i++) {
+                    track = data[i]
+                    console.log(track.rank)
+                    console.log(track.image)
+                    console.log(track.artist_name)
+                    console.log(track.track_name)
+                    console.log(track.playcount)
+                    dataContainer.innerHTML +=
+                    `<div class="track">
+                        <div class="number"><p>${track.rank}</p></div>
+                        <div class="track-photo"><img src=${track.image}></div>
+                        <div class="artist-name"><span>${track.artist_name}</span></div>
+                        <div class="track-name"><span>${track.track_name}</span></div>
+                        <div class="playcount"><span>${track.playcount}</span></div>
+                    </div>`
+                }
+            })
+            .catch(error => console.error(error));
+        </script>
     </div>
     <form method="POST" action="{{ url_for('return_home') }}" >
         <div class="buttons">

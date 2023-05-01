@@ -27,21 +27,18 @@ def get_top_tracks(user, period, limit):
     if r.status_code != 200:
         exceptions(r)
     else:
-        return organise_data(r)
-
-def organise_data(response):
-    track_data = []
-    r = response.json()
-    for track in r['toptracks']['track']:
-        data = {
-            'track_name': track['name'],
-            'playcount': track['playcount'],
-            'url': track['url'],
-            'artist_name': track['artist']['name'],
-            'image': track['image'][2]['#text']
-        }
-        track_data.append(data)
-    return track_data
+        track_data = []
+        response = r.json()
+        for track in response['toptracks']['track']:
+            data = {
+                'rank': track['@attr']['rank'],
+                'track_name': track['name'],
+                'playcount': track['playcount'],
+                'url': track['url'],
+                'artist_name': track['artist']['name'],
+            }
+            track_data.append(data)
+        return track_data
 
 def get_headers():
     username = config.SPOTIFY_USERNAME
@@ -58,6 +55,7 @@ def get_headers():
 
 def get_song_uri(track_data):
     uri_list = []
+    artist_list = []
     for i in range(len(track_data)):
         item = track_data[i]
         # remove punctuation as spotify does not recognise it when searching
@@ -79,10 +77,24 @@ def get_song_uri(track_data):
             for i in range(5):
                 if len(item['track_name']) == len(uri[i]['name']):
                     uri_list.append(uri[i]['uri'])
+                    artist_list.append(uri[i]['artists'][0])
                     break
                 elif i == 4:
                     uri_list.append(uri[0]['uri'])
-    return uri_list
+                    artist_list.append(uri[i]['artists'][0])
+    return uri_list, artist_list
+
+def get_artist_image(artist_list, track_data):
+    for i in range(len(track_data)):
+        artist_id = artist_list[i]['id']
+        url = f"https://api.spotify.com/v1/artists/{artist_id}"
+        r = requests.get(url = url, headers = get_headers())
+
+        if r.status_code != 200:
+            exceptions(r)
+            break
+        else:
+            track_data[i]['image'] = r.json()['images'][0]['url']
 
 def create_playlist(playlist_details, uri_list):
     url = f"https://api.spotify.com/v1/users/{config.SPOTIFY_USERNAME}/playlists"

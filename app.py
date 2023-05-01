@@ -5,7 +5,7 @@ app.py:
 Flask app
 """
 
-from flask import Flask, request, url_for, session, redirect, render_template
+from flask import Flask, request, url_for, session, redirect, render_template, jsonify
 from spotipy.oauth2 import SpotifyOAuth
 import spotipy
 import time
@@ -30,31 +30,41 @@ def submit_lastfm():
     username = request.form['username']
     time_period = request.form['time-period']
     tracks = request.form['tracks']
-    return redirect(url_for('results'))
+    return redirect(url_for('get_data'))
 
-@app.route('/results')
-def results():
+@app.route('/get-data')
+def get_data():
     global track_data
     track_data = main.get_top_tracks(user = username, period = time_period, limit = tracks)
+    return redirect(url_for('results'))
+
+@app.route('/process-data')
+def process_data():
+    return jsonify(track_data)
+    
+@app.route('/results')
+def results():
     if time_period == '7day':
         period = 'last 7 days'
     elif time_period == '1month':
         period = 'last 30 days'
-    elif time_period == '1month':
+    elif time_period == '3month':
         period = 'last 90 days'
-    elif time_period == '1month':
+    elif time_period == '6month':
         period = 'last 180 days'
-    elif time_period == '1month':
+    elif time_period == '12month':
         period = 'last 365 days'
     else:
         period = 'all-time'
+    global song_uri
+    song_uri, artist_list = main.get_song_uri(track_data)
+    main.get_artist_image(artist_list, track_data)
     return render_template('display-results.html', username = username, tracks = tracks, period = period)
 
 @app.route('/return-home', methods=['POST'])
 def return_home():
     if 'export' in request.form:
-        global song_uri
-        song_uri = main.get_song_uri(track_data)
+        
         return render_template('create-playlist.html')
     else:
         return redirect(url_for('index'))
