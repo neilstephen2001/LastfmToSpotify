@@ -1,15 +1,35 @@
 # last.fm data to Spotify Playlist
 A web app that generates a Spotify playlist of a user's most listened tracks, obtained from their last.fm profile.
 
-## To run
-TBD
+## To run the app:
+
+### Install dependencies
+Run on terminal:
+>pip3 install -r requirements.txt
+
+### Get Spotify client secrets 
+- Create a Spotify developer account
+- Create a new application on https://developer.spotify.com/dashboard/applications
+- Make note of the Spotify client ID, client secret and redirect URL
+- Create a .env file, where you store these using the variable names: SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET and SPOTIFY_REDIRECT_URL
+
+### Get last.fm API
+- Create an API account on https://www.last.fm/api/account/create
+- Store the API key in the local .env file, under the variable name: LASTFM_API
+
+### To run
+Run the following on terminal then click the link shown:
+> set FLASK_APP = app
+> 
+> flask run
+<br>
 
 ## How it works:
-- When the application is first run, you will see this page where you will be prompted to login to your Spotify account and authenticate the app.
+- When the application is first run, you will see this page where you will be prompted to login to your Spotify account 
 <img src="/screenshots/spotify-login.png" alt= “spotify-login” width="700">
 <br>
 
-- Once you have logged in, you will see the homepage where you will enter the details for the data to be extracted from last.fm.
+- Once you have logged in, you willsee the homepage where you will enter the details for the data to be extracted from last.fm.
 <img src="/screenshots/homepage.png" alt= “homepage” width="700">
 <br>
 
@@ -26,6 +46,8 @@ TBD
 <img src="/screenshots/display-playlist.png" alt= “display-playlist” width="700">
 <br>
 
-## To-do:
-- Need to work out how to handle input errors (e.g. if last.fm username does not exist or file uploaded is too big)
-
+## Notes/to-do:
+- Currently only works if user is included as one of the app's developers on the Spotify Developer website
+- Need to work out how to handle input errors (e.g. if last.fm username does not exist)
+- Add option to choose theme of embedded playlist
+- Might add an option to upload a custom photo when creating the playlist
