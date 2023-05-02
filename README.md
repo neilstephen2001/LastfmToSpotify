@@ -27,11 +27,11 @@ Run the following on terminal then click the link shown:
 <br>
 
 ## How it works:
-- When the application is first run, you will see this page where you will be prompted to login to your Spotify account 
+- When the application is first run, you will see this page where you will be prompted to login to and authenticate your Spotify account 
 <img src="/screenshots/spotify-login.png" alt= “spotify-login” width="700">
 <br>
 
-- Once you have logged in, you willsee the homepage where you will enter the details for the data to be extracted from last.fm.
+- Once you have logged in, you will see the homepage where you will enter the details for the data to be extracted from last.fm.
 <img src="/screenshots/homepage.png" alt= “homepage” width="700">
 <br>
 

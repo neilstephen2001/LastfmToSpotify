@@ -65,8 +65,8 @@ def get_data():
     global track_data
     track_data = get_top_tracks(user = username, period = time_period, limit = tracks)
     global song_uri
-    song_uri, artist_list = get_song_uri(track_data)
-    get_artist_image(artist_list, track_data)
+    song_uri, album_list = get_song_uri(track_data)
+    get_album_image(album_list, track_data)
     return redirect(url_for('results'))
 
 @app.route('/process-data')
@@ -159,7 +159,7 @@ def get_song_uri(track_data):
         "Authorization": f"Bearer { access_token }"
     }
     uri_list = []
-    artist_list = []
+    album_list = []
     for i in range(len(track_data)):
         item = track_data[i]
         # remove punctuation as spotify does not recognise it when searching
@@ -175,7 +175,7 @@ def get_song_uri(track_data):
         else:
             uri = r.json()['tracks']['items']
             if not uri:
-                artist_list.append({'id': ""})
+                album_list.append({'id': ""})
                 uri_list.append("")
             else:
                 # find matching song out of the top 3 results
@@ -186,26 +186,26 @@ def get_song_uri(track_data):
                 for i in range(top_results):
                     if len(item['track_name']) == len(uri[i]['name']):
                         uri_list.append(uri[i]['uri'])
-                        artist_list.append(uri[i]['artists'][0])
+                        album_list.append(uri[i]['album'])
                         break
                     elif i == 4:
                         uri_list.append(uri[0]['uri'])
-                        artist_list.append(uri[i]['artists'][0])
-    return uri_list, artist_list
+                        album_list.append(uri[i]['album'])
+    return uri_list, album_list
 
 
-# Returns the artist images to display with results
-def get_artist_image(artist_list, track_data):
+# Returns the album images to display with results
+def get_album_image(album_list, track_data):
     access_token = session.get('token_info').get('access_token')
     sp = spotipy.Spotify(auth=access_token)
     headers = {
         "Content-Type": "application/json",
         "Authorization": f"Bearer { access_token }"
     }
-    for i in range(len(artist_list)):
-        artist_id = artist_list[i]['id']
-        if artist_id != "":
-            url = f"https://api.spotify.com/v1/artists/{artist_id}"
+    for i in range(len(album_list)):
+        album_id = album_list[i]['id']
+        if album_id != "":
+            url = f"https://api.spotify.com/v1/albums/{album_id}"
             r = requests.get(url = url, headers = headers)
 
             if r.status_code != 200:
