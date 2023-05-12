@@ -22,7 +22,7 @@ app.config.from_pyfile('config.py')
 def login():
     sp_oauth = SpotifyOAuth(client_id=config.SPOTIFY_ID,
                             client_secret=config.SPOTIFY_SECRET,
-                            redirect_uri=config.SPOTIFY_REDIRECT_URL,
+                            redirect_uri=url_for('callback', _external=True),
                             scope=['playlist-modify-private', 'playlist-modify-public', 'ugc-image-upload'],
                             show_dialog=True)
     auth_url = sp_oauth.get_authorize_url()
@@ -33,7 +33,7 @@ def callback():
     code = request.args.get('code')
     sp_oauth = SpotifyOAuth(client_id=config.SPOTIFY_ID,
                             client_secret=config.SPOTIFY_SECRET,
-                            redirect_uri=config.SPOTIFY_REDIRECT_URL,
+                            redirect_uri=url_for('callback', _external=True),
                             scope=['playlist-modify-private', 'playlist-modify-public', 'ugc-image-upload'],
                             show_dialog=True)
     session.clear()
