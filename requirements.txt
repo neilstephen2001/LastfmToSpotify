@@ -4,6 +4,7 @@ certifi
 charset-normalizer
 clic
 Flask
+gunicorn
 idna
 itsdangerous
 Jinja2
