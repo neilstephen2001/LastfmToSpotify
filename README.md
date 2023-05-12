@@ -3,9 +3,9 @@ A web app that generates a Spotify playlist of a user's most listened tracks, ob
 <br>
 <br>
 
-## To run the app:
+## To run on local machine:
 
-### Install dependencies
+### Clone repository and install dependencies
 Run on terminal:
 >pip3 install -r requirements.txt
 
@@ -50,5 +50,6 @@ Run the following on terminal then click the link shown:
 <br>
 
 ## Notes/to-do:
-- Currently only works if user is included as one of the app's developers on the Spotify Developer website
+- Deployed on https://lastfm-to-spotify.onrender.com (currently paused). 
+  - However, it will only properly work if the user is included as one of the app's developers on the Spotify Developer website as the app is currently on development mode
 - Need to implement error handling (e.g. if last.fm username does not exist or file upload is too big)
