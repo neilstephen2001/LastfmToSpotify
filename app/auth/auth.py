@@ -19,4 +19,4 @@ def callback():
     session.clear()
     token_info = sp_oauth.get_access_token(code)
     session['token_info'] = token_info
-    return redirect(url_for('index'))
+    return redirect(url_for('home_bp.index'))
