@@ -1,12 +1,12 @@
 from decouple import config
 
-"""Flask app configuration"""
+# Flask app configuration
 TESTING = True
 DEBUG = False
 FLASK_ENV = 'development'
 SECRET_KEY = 'stan_exo'
 
-"""Secret keys"""
+# Secret keys
 USER_AGENT = "stvn127"
 LASTFM_API = config('LASTFM_API')
 SPOTIFY_ID = config('SPOTIFY_ID')

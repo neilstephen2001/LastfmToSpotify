@@ -2,9 +2,12 @@ from flask import Flask
 
 
 def create_app():
+
+    # Create flask app object, configure application and load in secret keys
     app = Flask(__name__)
     app.config.from_pyfile('config.py')
 
+    # Register blueprints
     with app.app_context():
         from .auth import auth
         app.register_blueprint(auth.auth_blueprint)
