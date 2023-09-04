@@ -13,7 +13,7 @@ Run on terminal:
 - Create a Spotify developer account
 - Create a new application on https://developer.spotify.com/dashboard/applications
 - Make note of the Spotify client ID, client secret and redirect URL
-- Create a .env file, where you store these using the variable names: SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET and SPOTIFY_REDIRECT_URL
+- Create a .env file, where you store these using the variable names: SPOTIFY_ID, SPOTIFY_SECRET and SPOTIFY_REDIRECT_URL
 
 ### Get last.fm API
 - Create an API account on https://www.last.fm/api/account/create
