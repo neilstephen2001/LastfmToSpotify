@@ -1,9 +1,7 @@
-from pathlib import Path
-
 from flask import Flask
 
 
-def create_app(test_config=None):
+def create_app():
     app = Flask(__name__)
     app.config.from_pyfile('config.py')
 
