@@ -10,7 +10,7 @@ from spotipy.oauth2 import SpotifyOAuth
 import spotipy
 import requests
 import json
-import config
+from app import config
 import base64
 
 """FLASK APP"""
