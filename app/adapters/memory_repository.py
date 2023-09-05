@@ -12,10 +12,8 @@ class MemoryRepository(AbstractRepository):
         if isinstance(song, Song) and song not in self.__songs:
             insort_left(self.__songs, song)
 
+    def get_top_songs(self):
+        return self.__songs
+
     def clear_data(self):
         self.__songs.clear()
-
-
-def generate_songs_list(songs_list: list, repo: MemoryRepository):
-    for song in songs_list:
-        repo.add_song(song)

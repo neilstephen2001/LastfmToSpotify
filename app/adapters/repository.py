@@ -18,5 +18,9 @@ class AbstractRepository(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
+    def get_top_songs(self):
+        raise NotImplementedError
+
+    @abc.abstractmethod
     def clear_data(self):
         raise NotImplementedError
