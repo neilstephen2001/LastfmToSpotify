@@ -5,7 +5,7 @@ from app.auth import services
 auth_blueprint = Blueprint('auth_bp', __name__)
 
 
-@auth_blueprint.route('/')
+@auth_blueprint.route('/login')
 def login():
     try:
         # Set up Spotify user authentication
@@ -15,7 +15,7 @@ def login():
 
     except AttributeError as e:
         # Error generating authentication
-        return render_template('error.html')
+        return redirect(url_for('home_bp.error'))
 
 
 @auth_blueprint.route('/callback')
@@ -26,7 +26,7 @@ def callback():
         session.clear()
         token_info = sp_oauth.get_access_token(code)
         session['token_info'] = token_info
-        return redirect(url_for('home_bp.index'))
+        return redirect(url_for('home_bp.home'))
 
     except AttributeError as e:
         # Error generating authentication
