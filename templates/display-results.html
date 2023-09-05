@@ -12,7 +12,7 @@
 
 <body>
     <div class="heading">
-        <h2 id="message">{{ username }}'s top {{ tracks }} tracks ({{ period }}) </p>  
+        <h2 id="message">{{ user }}'s top {{ track_count }} tracks ({{ period }}) </h2>
     </div>
     
     <div id="data-container">
@@ -50,7 +50,7 @@
             .catch(error => console.error(error));
         </script>
     </div>
-    <form method="POST" action="{{ url_for('export_playlist') }}" >
+    <form method="POST" action="{{ url_for('spotify_bp.export_playlist') }}" >
         <div class="buttons">
             <button id="export" name="export"><span>Export to Spotify playlist</span></button>
             <!-- may need to edit the <a> once flask has been implemented-->

@@ -4,6 +4,7 @@ from requests import HTTPError
 
 from app.adapters.repository import AbstractRepository
 from app.lastfm.utilities import generate_url, generate_header, generate_params, process_track_data
+from app.spotify.services import get_uri_and_albums, get_album_image
 
 
 # Requests the user's top tracks from last.fm
@@ -21,7 +22,18 @@ def request_top_tracks(user: str, period: str, limit: int, repo: AbstractReposit
         repo.clear_data()
         response = r.json()
         for track in response['toptracks']['track']:
-            repo.add_song(process_track_data(track))
+
+            song = process_track_data(track)
+            print("process_track_data")
+            print(song)
+            get_uri_and_albums(song)
+            print("get_uri_and_albums")
+            print(song)
+            get_album_image(song)
+            print("get_album_image")
+            print(song)
+            repo.add_song(song)
+            print("repo_add_song")
 
     elif r.status_code == 404 & (json.loads(r.text)).get('error') == 6:
         # Invalid username submitted

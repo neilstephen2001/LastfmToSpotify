@@ -7,9 +7,9 @@ class Song:
         self.__title = None
         self.__artist = None
         self.__playcount = None
-        self.__url = None
-        self.__uri_list = []
-        self.__album_list = []
+        self.__image_url = None
+        self.__uri = None
+        self.__album_id = None
 
     @property
     def title(self) -> str:
@@ -56,36 +56,40 @@ class Song:
             self.__playcount = None
 
     @property
-    def url(self) -> str:
-        return self.__url
+    def image_url(self) -> str:
+        return self.__image_url
 
-    @url.setter
-    def url(self, url: str):
-        if isinstance(url, str):
-            self.__url = url
+    @image_url.setter
+    def image_url(self, image_url: str):
+        if isinstance(image_url, str):
+            self.__image_url = image_url
         else:
-            self.__url = None
+            self.__image_url = None
 
     @property
-    def uri_list(self) -> list:
-        return self.__uri_list
+    def uri(self) -> str:
+        return self.__uri
+
+    @uri.setter
+    def uri(self, uri: str):
+        if isinstance(uri, str):
+            self.__uri = uri
+        else:
+            self.__uri = None
 
     @property
-    def album_list(self) -> list:
-        return self.__album_list
+    def album_id(self) -> str:
+        return self.__album_id
 
-    def add_uri(self, uri: str):
-        if not isinstance(uri, str) or uri in self.__uri_list:
-            return
-        self.__uri_list.append(uri)
-
-    def add_album(self, album: str):
-        if not isinstance(album, str) or album in self.__album_list:
-            return
-        self.__uri_list.append(album)
+    @album_id.setter
+    def album_id(self, album_id: str):
+        if isinstance(album_id, str):
+            self.__album_id = album_id
+        else:
+            self.__album_id = None
 
     def __repr__(self):
-        return f'<Song {self.__rank}. {self.__artist} - {self.__title}>'
+        return f'<Song {self.__rank}. {self.__artist} - {self.__title} Test {self.__playcount} {self.__image_url} {self.__uri} {self.__album_id}>'
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):

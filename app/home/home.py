@@ -18,5 +18,5 @@ def return_home():
 
 
 @home_blueprint.route('/error', methods=['POST'])
-def error_page():
+def error():
     return render_template('error.html')
