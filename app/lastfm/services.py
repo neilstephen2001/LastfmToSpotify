@@ -3,17 +3,17 @@ import requests
 from requests import HTTPError
 
 from app.adapters.repository import AbstractRepository
-from app.lastfm.utilities import generate_link, generate_header, generate_params, process_track_data
+from app.lastfm.utilities import generate_url, generate_header, generate_params, process_track_data
 
 
-# Returns the user's top tracks from last.fm
+# Requests the user's top tracks from last.fm
 def request_top_tracks(user: str, period: str, limit: int, repo: AbstractRepository):
     if limit < 1 | limit > 50:
         # Invalid track count submitted
         raise ValueError('limit')
 
     # Request top track data
-    r = requests.get(url=generate_link(), headers=generate_header(),
+    r = requests.get(url=generate_url(), headers=generate_header(),
                      params=generate_params(user, period, limit))
 
     if r.status_code == 200:
@@ -31,6 +31,7 @@ def request_top_tracks(user: str, period: str, limit: int, repo: AbstractReposit
         raise HTTPError
 
 
+# Returns the user's top tracks stored in the memory repository
 def return_top_tracks(repo: AbstractRepository):
     return repo.get_top_songs()
 
