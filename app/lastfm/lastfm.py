@@ -9,8 +9,8 @@ from app.spotify.services import AuthenticationError
 lastfm_blueprint = Blueprint('lastfm_bp', __name__)
 
 
-@lastfm_blueprint.route('/submit-lastfm', methods=['POST'])
-def submit_lastfm():
+@lastfm_blueprint.route('/top-tracks', methods=['POST'])
+def display_results():
     try:
         lastfm_user = request.form['user']
         period = request.form['time-period']

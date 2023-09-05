@@ -23,32 +23,15 @@
             <div class="track-name"><span>Track</span></div>
             <div class="playcount"><span>Playcount</span></div>
         </div>
-        <script>
-            // Get JSON data using AJAX
-            fetch('/process-data')
-            .then(response => response.json())
-            .then(data => {
-                console.log(data)
-                const dataContainer = document.getElementById('data-container');
-                for (i = 0; i < data.length; i++) {
-                    track = data[i]
-                    console.log(track.rank)
-                    console.log(track.image)
-                    console.log(track.artist_name)
-                    console.log(track.track_name)
-                    console.log(track.playcount)
-                    dataContainer.innerHTML +=
-                    `<div class="track">
-                        <div class="number"><p>${track.rank}</p></div>
-                        <div class="track-photo"><img src=${track.image}></div>
-                        <div class="artist-name"><span>${track.artist_name}</span></div>
-                        <div class="track-name"><span>${track.track_name}</span></div>
-                        <div class="playcount"><span>${track.playcount}</span></div>
-                    </div>`
-                }
-            })
-            .catch(error => console.error(error));
-        </script>
+        {% for song in songs %}
+            <div class="track">
+                <div class="number"><p>{{ song.rank }}</p></div>
+                <div class="track-photo"><img src={{ song.image_url }}></div>
+                <div class="artist-name"><span>{{ song.artist }}</span></div>
+                <div class="track-name"><span>{{ song.title }}</span></div>
+                <div class="playcount"><span>{{ song.playcount }}</span></div>
+            </div>
+        {% endfor %}
     </div>
     <form method="POST" action="{{ url_for('spotify_bp.export_playlist') }}" >
         <div class="buttons">

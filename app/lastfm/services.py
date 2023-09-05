@@ -22,18 +22,11 @@ def request_top_tracks(user: str, period: str, limit: int, repo: AbstractReposit
         repo.clear_data()
         response = r.json()
         for track in response['toptracks']['track']:
-
             song = process_track_data(track)
-            print("process_track_data")
-            print(song)
             get_uri_and_albums(song)
-            print("get_uri_and_albums")
-            print(song)
             get_album_image(song)
-            print("get_album_image")
-            print(song)
             repo.add_song(song)
-            print("repo_add_song")
+            print(song)
 
     elif r.status_code == 404 & (json.loads(r.text)).get('error') == 6:
         # Invalid username submitted

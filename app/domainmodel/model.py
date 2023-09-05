@@ -89,7 +89,7 @@ class Song:
             self.__album_id = None
 
     def __repr__(self):
-        return f'<Song {self.__rank}. {self.__artist} - {self.__title} Test {self.__playcount} {self.__image_url} {self.__uri} {self.__album_id}>'
+        return f'<Song {self.__rank}. {self.__artist} - {self.__title}>'
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
