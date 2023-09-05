@@ -13,7 +13,7 @@ def export_playlist():
     if 'export' in request.form:
         return render_template('create-playlist.html')
     else:
-        return redirect(url_for('index'))
+        return redirect(url_for('home_bp.home'))
 
 
 @spotify_blueprint.route('/playlist-create', methods=['POST'])
@@ -27,7 +27,7 @@ def playlist_create():
     cover_art = request.files['cover-art']
     encoded_image = base64.b64encode(cover_art.read())
     embedded_playlist_url = services.create_playlist(playlist_details, song_uri, encoded_image)
-    return redirect(url_for('playlist_display'))
+    return redirect(url_for('spotify_bp.playlist_display'))
 
 
 @spotify_blueprint.route('/playlist_display')
