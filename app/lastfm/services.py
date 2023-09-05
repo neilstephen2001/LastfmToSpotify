@@ -1,58 +1,39 @@
+import json
 import requests
-import spotipy
-from flask import session
+from requests import HTTPError
 
-from app import config
-from app.spotify.utilities import exceptions
+from app.adapters.repository import AbstractRepository
+from app.lastfm.utilities import generate_link, generate_header, generate_params, process_track_data
 
 
 # Returns the user's top tracks from last.fm
-def get_top_tracks(user, period, limit):
-    headers = {
-        'user-agent': config.USER_AGENT
-    }
-    payload = {
-        'api_key': config.LASTFM_API,
-        'method': "user.getTopTracks",
-        'format': 'json',
-        'user': user,
-        'period': period,
-        'limit': limit
-    }
-    r = requests.get('https://ws.audioscrobbler.com/2.0/', headers=headers, params=payload)
-    if r.status_code != 200:
-        exceptions(r)
-    else:
-        track_data = []
+def request_top_tracks(user: str, period: str, limit: int, repo: AbstractRepository):
+    if limit < 1 | limit > 50:
+        # Invalid track count submitted
+        raise ValueError('limit')
+
+    # Request top track data
+    r = requests.get(url=generate_link(), headers=generate_header(),
+                     params=generate_params(user, period, limit))
+
+    if r.status_code == 200:
+        # Process track data and upload onto memory repository
+        repo.clear_data()
         response = r.json()
         for track in response['toptracks']['track']:
-            data = {
-                'rank': track['@attr']['rank'],
-                'track_name': track['name'],
-                'playcount': track['playcount'],
-                'url': track['url'],
-                'artist_name': track['artist']['name'],
-            }
-            track_data.append(data)
-        return track_data
+            repo.add_song(process_track_data(track))
+
+    elif r.status_code == 404 & (json.loads(r.text)).get('error') == 6:
+        # Invalid username submitted
+        raise ValueError('user')
+
+    else:
+        raise HTTPError
 
 
-# Returns the album images to display with results
-def get_album_image(album_list, track_data):
-    access_token = session.get('token_info').get('access_token')
-    sp = spotipy.Spotify(auth=access_token)
-    headers = {
-        "Content-Type": "application/json",
-        "Authorization": f"Bearer { access_token }"
-    }
-    for i in range(len(album_list)):
-        album_id = album_list[i]['id']
-        if album_id != "":
-            url = f"https://api.spotify.com/v1/albums/{album_id}"
-            r = requests.get(url = url, headers = headers)
+def return_top_tracks(repo: AbstractRepository):
+    return repo.get_top_songs()
 
-            if r.status_code != 200:
-                exceptions(r)
-                break
-            else:
-                track_data[i]['image'] = r.json()['images'][0]['url']
+
+
+
