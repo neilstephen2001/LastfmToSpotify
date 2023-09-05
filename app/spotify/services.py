@@ -1,7 +1,12 @@
+import json
+
 import requests
 from requests import HTTPError
+
+from app.adapters.repository import AbstractRepository
 from app.domainmodel.model import Song
-from app.spotify.utilities import make_embedded_url, process_search_results, generate_search_params, generate_header
+from app.spotify.utilities import make_embedded_url, process_search_results, generate_search_params, generate_header, \
+    generate_image_header, get_current_username
 
 
 class AuthenticationError(Exception):
@@ -52,40 +57,34 @@ def get_album_image(song: Song):
             raise HTTPError
 
 
-"""
-def create_playlist(playlist_details, uri_list, cover_art=None):
-    access_token = session.get('token_info').get('access_token')
-    sp = spotipy.Spotify(auth=access_token)
-    headers = {
-        "Content-Type": "application/json",
-        "Authorization": f"Bearer {access_token}"
-    }
-    image_headers = {
-        "Content-Type": "image/png",
-        "Authorization": f"Bearer {access_token}"
-    }
-    username = sp.current_user()['id']
-    url = f"https://api.spotify.com/v1/users/{username}/playlists"
-    r = requests.post(url, data=playlist_details, headers=headers)
+# Returns the user's top tracks stored in the memory repository
+def return_top_tracks(repo: AbstractRepository):
+    return repo.get_top_songs()
+
+
+def generate_playlist(repo: AbstractRepository, playlist_details, cover_art=None):
+
+    url = f"https://api.spotify.com/v1/users/{get_current_username()}/playlists"
+    r = requests.post(url, data=playlist_details, headers=generate_header())
     if r.status_code != 201:
-        exceptions(r)
+        print(r.text)
     else:
         playlist = r.json()
         if cover_art:
             url = f"https://api.spotify.com/v1/playlists/{playlist['id']}/images"
-            req = requests.put(url, data=cover_art, headers=image_headers)
+            req = requests.put(url, data=cover_art, headers=generate_image_header())
             if req.status_code != 202:
-                exceptions(req)
+                print(req.text)
             else:
                 print("Playlist cover successfully added")
         url = f"https://api.spotify.com/v1/playlists/{playlist['id']}/tracks"
+        uri_list = [song.uri for song in return_top_tracks(repo)]
         uris = json.dumps({'uris': uri_list})
-        req = requests.post(url, data=uris, headers=headers)
+        req = requests.post(url, data=uris, headers=generate_header())
         if req.status_code != 201:
-            exceptions(req)
+            print(r.text)
         else:
             print("Playlist successfully created")
         playlist_url = playlist['external_urls']['spotify']
         embedded_url = make_embedded_url(playlist_url)
         return embedded_url
-"""

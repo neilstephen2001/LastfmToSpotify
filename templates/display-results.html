@@ -33,10 +33,9 @@
             </div>
         {% endfor %}
     </div>
-    <form method="POST" action="{{ url_for('spotify_bp.export_playlist') }}" >
+    <form method="POST" action="{{ url_for('spotify_bp.create_playlist') }}" >
         <div class="buttons">
             <button id="export" name="export"><span>Export to Spotify playlist</span></button>
-            <!-- may need to edit the <a> once flask has been implemented-->
             <button id="home" name="home"><span>Return to homepage</span></button>
         </div>
     </form>

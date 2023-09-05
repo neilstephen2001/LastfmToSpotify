@@ -1,3 +1,4 @@
+import spotipy
 from flask import session
 import urllib.parse
 
@@ -9,6 +10,18 @@ def generate_header():
     access_token = session.get('token_info').get('access_token')
     return {"Content-Type": "application/json",
             "Authorization": f"Bearer {access_token}"}
+
+
+def generate_image_header():
+    access_token = session.get('token_info').get('access_token')
+    return {"Content-Type": "image/png",
+            "Authorization": f"Bearer {access_token}"}
+
+
+def get_current_username():
+    access_token = session.get('token_info').get('access_token')
+    sp = spotipy.Spotify(auth=access_token)
+    return sp.current_user()['id']
 
 
 def generate_search_params(title: str, artist: str):
