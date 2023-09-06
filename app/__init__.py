@@ -1,8 +1,6 @@
 import os
-import app.adapters.repository as repo
 
 from flask import Flask
-from app.adapters.memory_repository import MemoryRepository
 
 
 def create_app():
@@ -10,9 +8,8 @@ def create_app():
     # Create flask app object, configure application and load in secret keys
     app = Flask(__name__, static_folder=os.getcwd()+"\\static")
     app.config.from_pyfile('config.py')
+    app.secret_key = app.config['SECRET_KEY']
     app.template_folder = os.getcwd() + "\\templates"
-
-    repo.repo_instance = MemoryRepository()
 
     # Register blueprints
     with app.app_context():

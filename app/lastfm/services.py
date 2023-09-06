@@ -1,14 +1,14 @@
 import json
 import requests
+from flask import session
 from requests import HTTPError
 
-from app.adapters.repository import AbstractRepository
 from app.lastfm.utilities import generate_url, generate_header, generate_params, process_track_data
 from app.spotify.services import get_uri_and_albums, get_album_image
 
 
 # Requests the user's top tracks from last.fm
-def request_top_tracks(user: str, period: str, limit: int, repo: AbstractRepository):
+def request_top_tracks(user: str, period: str, limit: int):
     if limit < 1 | limit > 50:
         # Invalid track count submitted
         raise ValueError('limit')
@@ -18,15 +18,15 @@ def request_top_tracks(user: str, period: str, limit: int, repo: AbstractReposit
                      params=generate_params(user, period, limit))
 
     if r.status_code == 200:
-        # Process track data and upload onto memory repository
-        repo.clear_data()
+        # Process track data and upload onto Flask session
         response = r.json()
+        top_tracks = []
         for track in response['toptracks']['track']:
             song = process_track_data(track)
             get_uri_and_albums(song)
             get_album_image(song)
-            repo.add_song(song)
-            print(song)
+            top_tracks.append(song.to_dict())
+        session['top_tracks'] = top_tracks
 
     elif r.status_code == 404 & (json.loads(r.text)).get('error') == 6:
         # Invalid username submitted
@@ -36,9 +36,9 @@ def request_top_tracks(user: str, period: str, limit: int, repo: AbstractReposit
         raise HTTPError
 
 
-# Returns the user's top tracks stored in the memory repository
-def return_top_tracks(repo: AbstractRepository):
-    return repo.get_top_songs()
+# Returns the user's top tracks stored in the Flask session
+def return_top_tracks():
+    return session.get('top_tracks', [])
 
 
 

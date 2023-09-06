@@ -1,3 +1,5 @@
+import json
+
 import spotipy
 from flask import session
 import urllib.parse
@@ -43,8 +45,15 @@ def process_search_results(song: Song, results):
             song.album_id = results[0]['album']['id']
 
 
+def generate_playlist_data(name: str, description: str, public: bool):
+    return json.dumps({'name': name, 'description': description, 'public': public})
+
+
 # Generate URL for embedding playlist onto page
 def make_embedded_url(playlist_url: str):
     split_url = playlist_url.partition(".com/")
     embedded_url = split_url[0] + split_url[1] + 'embed/' + split_url[2] + '?utm_source=generator&theme=0'
     return embedded_url
+
+
+

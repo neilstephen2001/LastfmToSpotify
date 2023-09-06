@@ -5,6 +5,8 @@ home_blueprint = Blueprint('home_bp', __name__)
 
 @home_blueprint.route('/')
 def home():
+    session['top_tracks'] = []
+    session['playlist'] = None
     token_info = session.get('token_info', None)
     if not token_info:
         return redirect(url_for('auth_bp.login'))

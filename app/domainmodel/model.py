@@ -3,7 +3,6 @@ class Song:
         if type(rank) is not int or rank < 0:
             raise ValueError("Invalid track ranking")
         self.__rank = rank
-
         self.__title = None
         self.__artist = None
         self.__playcount = None
@@ -36,13 +35,6 @@ class Song:
     @property
     def rank(self) -> int:
         return self.__rank
-
-    @rank.setter
-    def rank(self, rank: int):
-        if isinstance(rank, int):
-            self.__rank = rank
-        else:
-            self.__rank = None
 
     @property
     def playcount(self) -> int:
@@ -88,6 +80,17 @@ class Song:
         else:
             self.__album_id = None
 
+    def to_dict(self):
+        return {
+            'rank': self.__rank,
+            'title': self.__title,
+            'artist': self.__artist,
+            'playcount': self.__playcount,
+            'image_url': self.__image_url,
+            'uri': self.__uri,
+            'album_id': self.__album_id
+        }
+
     def __repr__(self):
         return f'<Song {self.__rank}. {self.__artist} - {self.__title}>'
 
@@ -104,11 +107,32 @@ class Song:
 
 class Playlist:
 
-    def __init__(self, user: str):
-        self.__user = user
-        self.__id = None
-        self.__name = None
-        self.__description = None
+    def __init__(self, user: str, id: str, name: str, description: str, public: bool):
+        if isinstance(user, str):
+            self.__user = user
+        else:
+            self.__user = ""
+
+        if isinstance(id, str):
+            self.__id = id
+        else:
+            self.__id = ""
+
+        if isinstance(name, str):
+            self.__name = name
+        else:
+            self.__name = None
+
+        if isinstance(description, str):
+            self.__description = description
+        else:
+            self.__description = None
+
+        if isinstance(public, bool):
+            self.__public = public
+        else:
+            self.__public = None
+
         self.__cover_art = None
         self.__url = None
         self.__embedded_url = None
@@ -122,34 +146,17 @@ class Playlist:
     def id(self) -> str:
         return self.__id
 
-    @id.setter
-    def id(self, id: str):
-        if isinstance(id, str):
-            self.__id = id
-        else:
-            self.__id = None
-
     @property
     def name(self) -> str:
         return self.__name
-
-    @name.setter
-    def name(self, name: str):
-        if isinstance(name, str):
-            self.__name = name
-        else:
-            self.__name = None
 
     @property
     def description(self) -> str:
         return self.__description
 
-    @description.setter
-    def description(self, description: str):
-        if isinstance(description, str):
-            self.__description = description
-        else:
-            self.__description = None
+    @property
+    def public(self) -> bool:
+        return self.__public
 
     @property
     def cover_art(self) -> str:
@@ -192,6 +199,18 @@ class Playlist:
         if not isinstance(song, Song) or song in self.__songs_list:
             return
         self.__songs_list.append(song)
+
+    def to_dict(self):
+        return {
+            'user': self.__user,
+            'id': self.__id,
+            'name': self.__name,
+            'description': self.__description,
+            'cover_art': self.__cover_art,
+            'url': self.__url,
+            'embedded_url': self.__embedded_url,
+            'songs_list': self.__songs_list
+        }
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
