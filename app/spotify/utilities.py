@@ -14,7 +14,7 @@ def generate_header():
 
 def generate_image_header():
     access_token = session.get('token_info').get('access_token')
-    return {"Content-Type": "image/png",
+    return {"Content-Type": "image/jpeg",
             "Authorization": f"Bearer {access_token}"}
 
 

@@ -4,7 +4,7 @@ import requests
 from requests import HTTPError
 
 from app.adapters.repository import AbstractRepository
-from app.domainmodel.model import Song
+from app.domainmodel.model import Song, Playlist
 from app.spotify.utilities import make_embedded_url, process_search_results, generate_search_params, generate_header, \
     generate_image_header, get_current_username
 
@@ -13,6 +13,16 @@ class AuthenticationError(Exception):
     def __init__(self, message="Spotify authentication has expired"):
         self.message = message
         super().__init__(self.message)
+
+
+# Returns the user's top tracks stored in the memory repository
+def return_top_tracks(repo: AbstractRepository):
+    return repo.get_top_songs()
+
+
+# Returns the playlist object stored in the memory repository
+def return_playlist(repo: AbstractRepository):
+    return repo.get_playlist()
 
 
 # Retrieve the song's Spotify URI and the ID of its associated album
@@ -57,34 +67,64 @@ def get_album_image(song: Song):
             raise HTTPError
 
 
-# Returns the user's top tracks stored in the memory repository
-def return_top_tracks(repo: AbstractRepository):
-    return repo.get_top_songs()
-
-
 def generate_playlist(repo: AbstractRepository, playlist_details, cover_art=None):
-
+    # Create the playlist
     url = f"https://api.spotify.com/v1/users/{get_current_username()}/playlists"
     r = requests.post(url, data=playlist_details, headers=generate_header())
-    if r.status_code != 201:
-        print(r.text)
-    else:
-        playlist = r.json()
+
+    if r.status_code == 201:
+
+        # Create playlist object
+        result = r.json()
+        playlist = Playlist(get_current_username(), result['id'])
+        repo.set_playlist(playlist)
+
+        # Add the songs to the playlist
+        uri_list = json.dumps({'uris': [song.uri for song in return_top_tracks(repo)]})
+        add_songs_to_playlist(playlist, uri_list)
+
+        # Add playlist cover
         if cover_art:
-            url = f"https://api.spotify.com/v1/playlists/{playlist['id']}/images"
-            req = requests.put(url, data=cover_art, headers=generate_image_header())
-            if req.status_code != 202:
-                print(req.text)
-            else:
-                print("Playlist cover successfully added")
-        url = f"https://api.spotify.com/v1/playlists/{playlist['id']}/tracks"
-        uri_list = [song.uri for song in return_top_tracks(repo)]
-        uris = json.dumps({'uris': uri_list})
-        req = requests.post(url, data=uris, headers=generate_header())
-        if req.status_code != 201:
-            print(r.text)
-        else:
-            print("Playlist successfully created")
-        playlist_url = playlist['external_urls']['spotify']
-        embedded_url = make_embedded_url(playlist_url)
-        return embedded_url
+            add_playlist_cover(playlist, cover_art)
+
+        # Generate embedded URL for playlist so it can be displayed
+        playlist_url = result['external_urls']['spotify']
+        playlist.embedded_url = make_embedded_url(playlist_url)
+
+    elif r.status_code == 401:
+        # Expired Spotify authentication
+        raise AuthenticationError
+
+    else:
+        raise HTTPError
+
+
+def add_playlist_cover(playlist: Playlist, cover_art: bytes):
+    url = f"https://api.spotify.com/v1/playlists/{playlist.id}/images"
+    r = requests.put(url, data=cover_art, headers=generate_image_header())
+
+    if r.status_code == 202:
+        playlist.cover_art = cover_art
+
+    elif r.status_code == 401:
+        # Expired Spotify authentication
+        raise AuthenticationError
+
+    else:
+        raise HTTPError
+
+
+def add_songs_to_playlist(playlist: Playlist, uri_list: list):
+    url = f"https://api.spotify.com/v1/playlists/{playlist.id}/tracks"
+    r = requests.post(url, data=uri_list, headers=generate_header())
+
+    if r.status_code == 201:
+        for uri in uri_list:
+            playlist.add_song(uri)
+
+    elif r.status_code == 401:
+        # Expired Spotify authentication
+        raise AuthenticationError
+
+    else:
+        raise HTTPError

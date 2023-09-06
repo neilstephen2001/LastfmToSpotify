@@ -22,5 +22,13 @@ class AbstractRepository(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
+    def get_playlist(self):
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def set_playlist(self, playlist: Playlist):
+        raise NotImplementedError
+
+    @abc.abstractmethod
     def clear_data(self):
         raise NotImplementedError

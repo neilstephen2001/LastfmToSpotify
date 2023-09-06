@@ -106,6 +106,7 @@ class Playlist:
 
     def __init__(self, user: str):
         self.__user = user
+        self.__id = None
         self.__name = None
         self.__description = None
         self.__cover_art = None
@@ -116,6 +117,17 @@ class Playlist:
     @property
     def user(self) -> str:
         return self.__user
+
+    @property
+    def id(self) -> str:
+        return self.__id
+
+    @id.setter
+    def id(self, id: str):
+        if isinstance(id, str):
+            self.__id = id
+        else:
+            self.__id = None
 
     @property
     def name(self) -> str:
