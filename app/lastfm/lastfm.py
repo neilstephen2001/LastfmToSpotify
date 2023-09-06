@@ -21,8 +21,14 @@ def display_results():
                                track_count=track_count,
                                songs=return_top_tracks())
 
-    except ValueError:
+    except ValueError as e:
         # Invalid parameters, need to re-enter
+        if str(e) == 'user':
+            session['home_form_error'] = 'Invalid last.fm user.'
+        elif str(e) == 'limit':
+            session['home_form_error'] = 'Invalid number of tracks.'
+        else:
+            session['home_form_error'] = 'Please fill in all the fields.'
         return redirect(url_for('home_bp.home'))
 
     except AuthenticationError:

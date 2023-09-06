@@ -2,7 +2,6 @@ import json
 
 import spotipy
 from flask import session
-import urllib.parse
 
 from app.domainmodel.model import Song
 
@@ -31,9 +30,9 @@ def generate_search_params(title: str, artist: str):
 
 
 def process_search_results(song: Song, results):
-    top_results = len(results) if len(results) < 5 else 5
+    top_results = len(results) if len(results) < 3 else 3
 
-    # find matching song out of the top results (maximum 5)
+    # find matching song out of the top results (maximum 3)
     # if none match, pick the first result
     for i in range(top_results):
         if len(song.title) == len(results[i]['name']):

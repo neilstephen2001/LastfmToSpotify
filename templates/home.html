@@ -29,7 +29,13 @@
                 </select>
                 <label for="track-count">Number of tracks (max 50):</label>
                 <input type="number" id="track-count" name="track-count">
+                {% if error_message %}
+                <div class="error-message">
+                    <p>{{ error_message }}</p>
+                </div>
+                {% endif %}
             </div>
+
             <div class="buttons">
                 <input type="submit" name="submit" value="Submit">
                 <input type="reset" name="reset" value="Reset">

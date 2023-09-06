@@ -104,6 +104,10 @@ select option {
 textarea {
     resize: none;
 }
+.error-message {
+    margin-top: 10px;
+    color: #e00;
+}
 /* for the buttons at the bottom of the page */
 .buttons {
     display: flex;
