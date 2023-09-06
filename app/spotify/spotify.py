@@ -25,14 +25,18 @@ def display_playlist():
         public = False
 
         cover_art = request.files['cover-art']
-        encoded_image = base64.b64encode(cover_art.read())
+        if cover_art and len(cover_art.read()) > 256 * 1024:
+            raise ValueError('cover-art')
 
-        generate_playlist(name, description, public, encoded_image)
+        generate_playlist(name, description, public, base64.b64encode(cover_art.read()))
         playlist = return_playlist()
         return render_template('display-playlist.html', value=playlist['embedded_url'])
 
-    except ValueError:
-        session['playlist_form_error'] = 'Playlist name is required.'
+    except ValueError as e:
+        if str(e) == 'playlist-name':
+            session['playlist_form_error'] = 'Playlist name is required.'
+        else:
+            session['playlist_form_error'] = 'File size is too large.'
         return redirect(url_for('spotify_bp.create_playlist'))
 
     except AuthenticationError:
