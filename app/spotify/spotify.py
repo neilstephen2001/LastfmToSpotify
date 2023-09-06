@@ -20,10 +20,14 @@ def create_playlist():
 @spotify_blueprint.route('/display-playlist', methods=['POST'])
 def display_playlist():
     try:
+        # Playlist name is required
         name = request.form.get('playlist-name')
+        if name == "":
+            raise ValueError('playlist-name')
         description = request.form.get('description')
         public = False
 
+        # Validate that image to be uploaded is less than 256 kB
         cover_art = request.files['cover-art']
         if cover_art and len(cover_art.read()) > 256 * 1024:
             raise ValueError('cover-art')

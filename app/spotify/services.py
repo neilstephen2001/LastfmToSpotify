@@ -68,8 +68,6 @@ def get_album_image(song: Song):
 
 
 def generate_playlist(name: str, description: str, public: bool = False, cover_art: bytes = None):
-    if name == "":
-        raise ValueError('playlist_name')
 
     # Create the playlist
     url = f"https://api.spotify.com/v1/users/{get_current_username()}/playlists"
