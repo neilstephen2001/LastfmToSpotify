@@ -16,7 +16,7 @@
             <h2 id="form-header">Get data from last.fm</h2>
             <div class="form-input">
                 <label for="user">last.fm username:</label>
-                <input type="text" id="user" name="user">
+                <input type="text" id="user" name="user" value="stvn127">
                 <p>For demo purposes, you can use 'stvn127' (my username)</p>
                 <label for="time-period">Time period:</label>
                 <select name="time-period" id="time-period">
@@ -28,7 +28,7 @@
                     <option value="overall">All-time</option>
                 </select>
                 <label for="track-count">Number of tracks (max 50):</label>
-                <input type="number" id="track-count" name="track-count">
+                <input type="number" id="track-count" name="track-count" value="10" min="1" max="50" oninput="validity.valid||(value='')">
                 {% if error_message %}
                 <div class="error-message">
                     <p>{{ error_message }}</p>
