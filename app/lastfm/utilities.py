@@ -16,7 +16,6 @@ def generate_params(user: str, period: str, limit: int):
 
 # Convert JSON track data into Song object
 def process_track_data(track):
-    print(track['artist']['name'])
     return Song(int(track['@attr']['rank']), track['name'], track['artist']['name'], int(track['playcount']))
 
 

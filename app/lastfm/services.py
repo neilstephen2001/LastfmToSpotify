@@ -13,7 +13,7 @@ def request_top_tracks(user: str, period: str, limit: int):
     if user == "" or limit is None:
         raise ValueError('incomplete')
 
-    if limit < 1 | limit > 50:
+    if limit < 1 | limit > 51:
         # Invalid track count submitted
         raise ValueError('limit')
 

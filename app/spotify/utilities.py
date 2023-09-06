@@ -26,7 +26,7 @@ def get_current_username():
 
 
 def generate_search_params(title: str, artist: str):
-    return {'q': f'track:{title} artist:{artist}', 'type': 'track', 'limit': 5}
+    return {'q': f'{title} {artist}', 'type': 'track', 'limit': 5}
 
 
 def process_search_results(song: Song, results):
@@ -35,6 +35,7 @@ def process_search_results(song: Song, results):
     # find matching song out of the top results (maximum 3)
     # if none match, pick the first result
     for i in range(top_results):
+        print(results[i]['album'])
         if len(song.title) == len(results[i]['name']):
             song.uri = results[i]['uri']
             song.album_id = results[i]['album']['id']
