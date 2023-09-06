@@ -35,7 +35,6 @@ def process_search_results(song: Song, results):
     # find matching song out of the top results (maximum 3)
     # if none match, pick the first result
     for i in range(top_results):
-        print(results[i]['album'])
         if len(song.title) == len(results[i]['name']):
             song.uri = results[i]['uri']
             song.album_id = results[i]['album']['id']
