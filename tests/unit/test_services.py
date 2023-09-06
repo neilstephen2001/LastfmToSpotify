@@ -10,5 +10,5 @@ def test_create_spotify_oauth():
 
 
 # lastfm service
-def test_get_top_tracks():
+def test_request_top_tracks():
     pass

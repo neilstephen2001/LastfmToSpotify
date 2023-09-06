@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, url_for, request, session, render_template
+from flask import Blueprint, redirect, url_for, request, session
 
 from app.auth import services
 
@@ -29,5 +29,5 @@ def callback():
         return redirect(url_for('home_bp.home'))
 
     except AttributeError as e:
-        # Error generating authentication
-        return render_template('error.html')
+        # Error generating user authentication
+        return redirect(url_for('home_bp.error'))

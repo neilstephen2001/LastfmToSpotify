@@ -2,16 +2,6 @@ from app import config
 from app.domainmodel.model import Song
 
 
-# URL for requesting last.fm top tracks
-def generate_url():
-    return 'https://ws.audioscrobbler.com/2.0/'
-
-
-# Header for requesting last.fm top tracks
-def generate_header():
-    return {'user-agent': config.USER_AGENT}
-
-
 # Parameters for requesting last.fm top tracks
 def generate_params(user: str, period: str, limit: int):
     return {
@@ -24,13 +14,10 @@ def generate_params(user: str, period: str, limit: int):
     }
 
 
-# Convert JSON data into Song object
+# Convert JSON track data into Song object
 def process_track_data(track):
-    song = Song(int(track['@attr']['rank']))
-    song.title = track['name']
-    song.artist = track['artist']['name']
-    song.playcount = int(track['playcount'])
-    return song
+    print(track['artist']['name'])
+    return Song(int(track['@attr']['rank']), track['name'], track['artist']['name'], int(track['playcount']))
 
 
 # Process time period for displaying on page

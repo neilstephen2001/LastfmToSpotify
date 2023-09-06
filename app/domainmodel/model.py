@@ -1,51 +1,40 @@
 class Song:
-    def __init__(self, rank: int):
+    def __init__(self, rank: int, title: str, artist: str, playcount: int):
         if type(rank) is not int or rank < 0:
             raise ValueError("Invalid track ranking")
         self.__rank = rank
-        self.__title = None
-        self.__artist = None
-        self.__playcount = None
+
+        if not isinstance(title, str):
+            raise ValueError("Invalid song title")
+        self.__title = title
+
+        if not isinstance(artist, str):
+            raise ValueError("Invalid artist")
+        self.__artist = artist
+
+        if not isinstance(playcount, int) or playcount < 0:
+            raise ValueError("Invalid playcount")
+        self.__playcount = playcount
+
         self.__image_url = None
         self.__uri = None
         self.__album_id = None
-
-    @property
-    def title(self) -> str:
-        return self.__title
-
-    @title.setter
-    def title(self, title: str):
-        if isinstance(title, str):
-            self.__title = title
-        else:
-            self.__title = None
-
-    @property
-    def artist(self) -> str:
-        return self.__artist
-
-    @artist.setter
-    def artist(self, artist: str):
-        if isinstance(artist, str):
-            self.__artist = artist
-        else:
-            self.__artist = None
 
     @property
     def rank(self) -> int:
         return self.__rank
 
     @property
+    def title(self) -> str:
+        return self.__title
+
+    @property
+    def artist(self) -> str:
+        return self.__artist
+
+    @property
     def playcount(self) -> int:
         return self.__playcount
-
-    @playcount.setter
-    def playcount(self, playcount: int):
-        if isinstance(playcount, int):
-            self.__playcount = playcount
-        else:
-            self.__playcount = None
 
     @property
     def image_url(self) -> str:
